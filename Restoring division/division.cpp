@@ -1,5 +1,6 @@
 #include <iostream>
 #include <vector>
+#include <cstdlib>
 
 using namespace std;
 
@@ -182,6 +183,8 @@ int main( int argc, const char* argv[] )
     char* holder1;
     char* holder2;
 
+    int counter = 0;
+
     for(int i = 0; i != NUM_SIZE + 1; i++)
     {
         dividend[i] = '0';
@@ -193,6 +196,20 @@ int main( int argc, const char* argv[] )
     cin>>dividend;
     cout<<"Enter divisor: ";
     cin>>divisor;
+
+    for(int i = 0; i != NUM_SIZE + 1; i++)
+    {
+        if(divisor[i] == '1')
+        { break; }
+        counter ++;
+    }
+
+    if(counter == NUM_SIZE + 1)
+    {
+        cout<<"Do not divide by 0!"<<endl;
+        cin.get();
+        return EXIT_SUCCESS;
+    }
 
     Divis divis;
     holder1 = divis.shift(dividend);
