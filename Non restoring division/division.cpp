@@ -3,7 +3,7 @@
 
 using namespace std;
 
-const int NUM_SIZE(4);
+const int NUM_SIZE(128);
 
 struct Bignum
 {
@@ -44,7 +44,7 @@ struct Bignum
         return result;
     }
 
-    void operator<<(Bignum other)
+    void operator<<(Bignum &other)
     {
         Bignum result_this(size);
         Bignum result_other(other.size);
@@ -54,11 +54,6 @@ struct Bignum
 
         result_this.bin_num[size - 1] = other.bin_num[0];
         last_popped = bin_num[0];
-
-        cout<<"remainder: ";
-        for(int i = 0; i != result_this.size; i++)
-            { cout<<result_this.bin_num[i]; }
-        cout<<endl;
 
         for(int i = 0; i != size; i++)
         { bin_num[i] = result_this.bin_num[i]; }
@@ -101,10 +96,10 @@ struct Divis
     {
         for(int i = 0; i != NUM_SIZE; i++)
         {
-            divid[i] == '1' ? dividend.bin_num[i] = true : dividend.bin_num[i] = false;
-            divis[i] == '1' ? divisor.bin_num[i + 1] = true : divisor.bin_num[i + 1] = false;
+            divid[i + 1] == '1' ? dividend.bin_num[i] = true : dividend.bin_num[i] = false;
+            divis[i] == '1' ? divisor.bin_num[i] = true : divisor.bin_num[i] = false;
         }
-        divisor.bin_num[0] = false;
+        divis[NUM_SIZE] == '1' ? divisor.bin_num[NUM_SIZE] = true : divisor.bin_num[NUM_SIZE] = false;
 
         init_remainder();
         init_quotient();
@@ -136,6 +131,7 @@ struct Divis
         for(int i = 0; i != NUM_SIZE; i++)
         {
             remainder<<quotient;
+
 
             if(remainder.last_popped == true)
             { mantissa = divisor; }
@@ -230,8 +226,4 @@ int main( int argc, const char* argv[] )
 
     divis.divide();
     divis.result_print();
-    delete []dividend;
-    delete []divisor;
-    delete holder1;
-    delete holder2;
 }
