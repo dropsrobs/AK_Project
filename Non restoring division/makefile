@@ -1,2 +1,2 @@
-division: division.cpp
-	g++ -g division.cpp -o $@
+division:
+	gcc -g -m32 division.c division.s -o division
