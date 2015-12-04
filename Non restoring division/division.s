@@ -1,50 +1,53 @@
+NUM_SIZE = 64
+MEM_SIZE = 8
 .bss
-    .lcomm quotient, 256
-    .lcomm mantissa, 256
-    .lcomm remainder, 256
+    .lcomm quotient, MEM_SIZE
+    .lcomm mantissa, MEM_SIZE
+    .lcomm remainder, MEM_SIZE
+    .lcomm loop_size, 4
 .text
 .globl division
 .type division, @function
 
 division:
-    pushl %ebp
+    push %ebp
     movl %esp, %ebp
 
-    movl 8(%ebp), %eax
-    pushl %eax
-    movl  quotient, %eax
-    pushl %eax
+    movl $loop_size, %eax        #loop_size address
+    push %eax
+    mov $NUM_SIZE, %eax
+    push %eax                   #NUM_SIZE value
+    call set_loop_size          #initialize loop_size
+
+###############################copy dividend to quotient
+
+    movl loop_size, %eax
+    push %eax
+    movl 8(%ebp), %eax          #source address
+    push %eax
+    movl $quotient, %eax        #destination address
+    push %eax
 
     call copy
 
-    movl $7, %ecx
-    xor %edi, %edi
+##############################copy divisor to mantissa
 
+    movl loop_size, %eax
+    push %eax
+    movl 12(%ebp), %eax
+    push %eax
+    movl $mantissa, %eax
+    push %eax
+
+    call copy
+
+    movl loop_size, %ecx
+    xor %edi, %edi
 main_loop:
-    movl (%edx, %edi, 4), %eax
-    inc %edi
-    nop
+
+    
+
     loop main_loop
 
-    leave
-ret
-
-.type copy, @function
-copy:
-    pushl %ebp
-    movl %esp, %ebp
-    pushl %eax
-    pushl %edi
-    pushl %edx
-
-    movl 8(%ebp), %eax
-    movl 12(%ebp), %ebx
-
-    movl (%ebx, %edi, 4), %edx
-    movl %edx, (%eax, %edi, 4)
-
-    pop %edx
-    pop %edi
-    pop %eax
     leave
 ret
