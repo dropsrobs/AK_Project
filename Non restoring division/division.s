@@ -5,6 +5,7 @@ MEM_SIZE = 8
     .lcomm mantissa, MEM_SIZE
     .lcomm remainder, MEM_SIZE
     .lcomm loop_size, 4
+    .lcomm last_popped, 4
 .text
 .globl division
 .type division, @function
@@ -15,8 +16,8 @@ division:
 
     movl $loop_size, %eax        #loop_size address
     push %eax
-    mov $NUM_SIZE, %eax
-    push %eax                   #NUM_SIZE value
+    mov $NUM_SIZE, %eax         #NUM_SIZE value
+    push %eax
     call set_loop_size          #initialize loop_size
 
 ###############################copy dividend to quotient
@@ -40,12 +41,18 @@ division:
     push %eax
 
     call copy
+#############################shifter
+    movl loop_size, %eax
+    push %eax
+    movl $last_popped, %eax
+    push %eax
+    movl $remainder, %eax
+    push %eax
+    movl $quotient, %eax
+    push %eax
 
-    movl loop_size, %ecx
-    xor %edi, %edi
+    call shifter
 main_loop:
-
-    
 
     loop main_loop
 

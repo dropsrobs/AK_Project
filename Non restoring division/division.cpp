@@ -63,8 +63,8 @@ int main( int argc, const char* argv[] )
     // char divisor_buffer[NUM_SIZE];
     //
     long dividend[2], divisor[2], quotient[2], remainder[2];
-    dividend[0] = 0x00000010;
-    dividend[1] = 0x00110000;
+    dividend[0] = 0xFF000010;
+    dividend[1] = 0xF0110000;
 
     divisor[0] = 0x10000000;
     divisor[1] = 0x00000000;
