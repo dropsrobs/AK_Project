@@ -17,12 +17,13 @@ addition:
 
     movl %ecx, %edi
     dec %edi
+    clc
 
 addition_loop:
     movl (%eax, %edi, 4), %edx
     movl (%ebx, %edi, 4), %esi
-    adc %esi, %edx
-    movl %edx, (%ebx, %edi, 4)
+    adc %edx, %esi
+    movl %esi, (%ebx, %edi, 4)
     dec %edi
     loop addition_loop
 
@@ -52,12 +53,13 @@ subtraction:
 
     movl %ecx, %edi
     dec %edi
+    clc
 
 subtraction_loop:
     movl (%eax, %edi, 4), %edx
     movl (%ebx, %edi, 4), %esi
-    sbb %esi, %edx
-    movl %edx, (%ebx, %edi, 4)
+    sbb %edx, %esi
+    movl %esi, (%ebx, %edi, 4)
     dec %edi
     loop subtraction_loop
 
@@ -79,38 +81,41 @@ reverter:
     push %ebx
     push %ecx
     push %edx
+    push %esi
 
     movl 8(%ebp), %eax #quotient
     movl 12(%ebp), %ebx #remainder
     movl 16(%ebp), %ecx #loop_size
-    dec %ecx
 
+    dec %ecx
     xor %edi, %edi
 
     movl (%ebx, %edi, 4), %edx
     and $0x80000000, %edx
     cmp $0x80000000, %edx
     je negate_one
+    jmp negate_zero
 
-#move to quotient
-    movl %ecx, %edi
-    movl (%eax, %edi, 4), %edx
-    add $1, %edx
-    movl %edx, (%eax, %edi, 4)
-
-    jmp continue
 negate_one:
     movl %ecx, %edi
     movl (%eax, %edi, 4), %edx
-    sub $1, %edx
+    and $0b11111111111111111111111111111110, %edx
+    movl %edx, (%eax, %edi, 4)
+    jmp continue
+
+negate_zero:
+    movl %ecx, %edi
+    movl (%eax, %edi, 4), %edx
+    or $0b00000000000000000000000000000001, %edx
     movl %edx, (%eax, %edi, 4)
 
 continue:
 
+    pop %esi
     pop %edx
     pop %ecx
     pop %ebx
     pop %eax
-    
+
     leave
 ret

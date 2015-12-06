@@ -42,16 +42,7 @@ division:
 
     call copy
 
-##############################set remainder to zero
-
-    movl loop_size, %eax
-    push %eax
-    movl $remainder, %eax
-    push %eax
-
-    call set_remainder
-
-    movl loop_size, %ecx
+    movl $NUM_SIZE, %ecx
 
 main_loop:
 #############################shifter

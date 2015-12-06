@@ -42,7 +42,6 @@ extern "C" {
 //         {
 //             remainder<<quotient;
 //
-//
 //             if(remainder.last_popped == true)
 //             { mantissa = divisor; }
 //             else
@@ -66,10 +65,10 @@ int main( int argc, const char* argv[] )
     //
     long dividend[2], divisor[2], quotient[2], remainder[2];
     dividend[0] = 0x00000000;
-    dividend[1] = 0x00000012;
+    dividend[1] = 0x00000011;
 
     divisor[0] = 0x00000000;
-    divisor[1] = 0x00000002;
+    divisor[1] = 0x00000005;
 
 
 division(dividend, divisor, quotient, remainder);

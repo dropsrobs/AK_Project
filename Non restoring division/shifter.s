@@ -32,7 +32,7 @@ set_last_popped_to_one:
     inc %edi
 
 last_popped_continue:
-    movl %esi, (%edx)    #store last_popped in given address
+    movl %edi, (%edx)    #store last_popped in given address
 
     movl %ecx, %edi
     dec %edi             #start from LSB
