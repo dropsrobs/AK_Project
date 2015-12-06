@@ -116,5 +116,23 @@ divisor_addition:
 
 divisor_continue:
 
+    movl loop_size, %eax
+    push %eax
+    movl $quotient, %eax
+    push %eax
+    movl 16(%ebp), %eax
+    push %eax
+
+    call copy
+
+    movl loop_size, %eax
+    push %eax
+    movl $remainder, %eax
+    push %eax
+    movl 20(%ebp), %eax
+    push %eax
+
+    call copy
+
     leave
 ret

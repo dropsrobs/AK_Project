@@ -64,18 +64,20 @@ int main( int argc, const char* argv[] )
     // char divisor_buffer[NUM_SIZE];
     //
     long dividend[2], divisor[2], quotient[2], remainder[2];
+
+
     dividend[0] = 0x00000000;
     dividend[1] = 0x00000011;
 
     divisor[0] = 0x00000000;
     divisor[1] = 0x00000005;
 
-
-division(dividend, divisor, quotient, remainder);
-
+    division(dividend, divisor, quotient, remainder);
 
     cout<<hex<<quotient[0]<<endl;
     cout<<hex<<quotient[1]<<endl;
+    cout<<hex<<remainder[0]<<endl;
+    cout<<hex<<remainder[1]<<endl;
     // char test_divisor[] = { '0', '1', '5', '0', '1', '5', '0', '1', '5', '0', '1', '5','0', '1', '5', };
     // char test_dividend[] = { '0', '0', '5' };
 
