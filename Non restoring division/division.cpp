@@ -1,8 +1,10 @@
 #include <stdio.h>
 #include <fstream>
 #include <stdlib.h>
+#include <iostream>
 
 const int NUM_SIZE(64);
+using namespace std;
 
 extern "C" {
      void division(
@@ -63,15 +65,18 @@ int main( int argc, const char* argv[] )
     // char divisor_buffer[NUM_SIZE];
     //
     long dividend[2], divisor[2], quotient[2], remainder[2];
-    dividend[0] = 0xFF000010;
-    dividend[1] = 0xF0110000;
+    dividend[0] = 0x00000000;
+    dividend[1] = 0x00000012;
 
-    divisor[0] = 0x10000000;
-    divisor[1] = 0x00000000;
+    divisor[0] = 0x00000000;
+    divisor[1] = 0x00000002;
 
 
 division(dividend, divisor, quotient, remainder);
 
+
+    cout<<hex<<quotient[0]<<endl;
+    cout<<hex<<quotient[1]<<endl;
     // char test_divisor[] = { '0', '1', '5', '0', '1', '5', '0', '1', '5', '0', '1', '5','0', '1', '5', };
     // char test_dividend[] = { '0', '0', '5' };
 

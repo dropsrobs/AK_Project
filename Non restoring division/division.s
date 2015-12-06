@@ -41,6 +41,19 @@ division:
     push %eax
 
     call copy
+
+##############################set remainder to zero
+
+    movl loop_size, %eax
+    push %eax
+    movl $remainder, %eax
+    push %eax
+
+    call set_remainder
+
+    movl loop_size, %ecx
+
+main_loop:
 #############################shifter
     movl loop_size, %eax
     push %eax
@@ -52,9 +65,65 @@ division:
     push %eax
 
     call shifter
-main_loop:
 
-    loop main_loop
+    movl last_popped, %eax
+    cmp $1, %eax
+    je mantissa_addition
+    jmp mantissa_subtraction
+
+mantissa_addition:
+    movl loop_size, %eax
+    push %eax
+    movl $remainder, %eax
+    push %eax
+    movl $mantissa, %eax
+    push %eax
+
+    call addition
+    jmp mantissa_continue
+
+mantissa_subtraction:
+    movl loop_size, %eax
+    push %eax
+    movl $remainder, %eax
+    push %eax
+    movl $mantissa, %eax
+    push %eax
+
+    call subtraction
+
+mantissa_continue:
+    movl loop_size, %eax
+    push %eax
+    movl $remainder, %eax
+    push %eax
+    movl $quotient, %eax
+    push %eax
+
+    call reverter
+
+    dec %ecx
+    cmp $0, %ecx
+    jne main_loop
+
+    xor %edi, %edi
+    movl remainder(,%edi, 4), %eax
+    and $0x80000000, %eax
+    cmp $0x80000000, %eax
+    je divisor_addition
+    jmp divisor_continue
+
+divisor_addition:
+    movl loop_size, %eax
+    push %eax
+    movl $remainder, %eax
+    push %eax
+    movl $mantissa, %eax
+    push %eax
+
+    call addition
+
+divisor_continue:
 
     leave
 ret

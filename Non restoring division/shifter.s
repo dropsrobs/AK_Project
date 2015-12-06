@@ -69,7 +69,7 @@ MSB_new_continue_second:
     dec %edi             #start from LSB
 
 first_operand_loop:
-    movl (%eax, %edi, 4), %edx
+    movl (%ebx, %edi, 4), %edx
     and $0x80000000, %edx        #check MSB
     cmp $0x80000000, %edx
     je set_MSB_new_to_one_first
@@ -80,10 +80,10 @@ set_MSB_new_to_one_first:
 
 MSB_new_continue_first:
     movl %edx, MSB_holder_new
-    movl (%eax, %edi, 4), %edx
+    movl (%ebx, %edi, 4), %edx
     shl %edx
     add MSB_holder_old, %edx
-    movl %edx, (%eax, %edi, 4)
+    movl %edx, (%ebx, %edi, 4)
 
     movl MSB_holder_new, %edx       #exchange values
     movl MSB_holder_old, %esi
@@ -93,6 +93,9 @@ MSB_new_continue_first:
     dec %edi
 
     loop first_operand_loop
+
+    movl $0, %eax
+    movl %eax, MSB_holder_old
 
     pop %ecx
     pop %edx
